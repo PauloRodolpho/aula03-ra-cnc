@@ -1,0 +1,52 @@
+/* Define variáveis de cor reutilizadas em toda a interface. */
+:root { --navy:#071a2d; --blue:#0b5fa5; --cyan:#38bdf8; --green:#22c55e; --white:#f8fafc; --glass:rgba(5,18,32,.88); } /* Centraliza as cores principais do projeto. */
+/* Faz todos os elementos calcularem largura e altura incluindo bordas e espaçamentos. */
+* { box-sizing:border-box; } /* Evita diferenças inesperadas de tamanho entre elementos. */
+/* Remove a margem padrão e prepara a página para ocupar toda a tela. */
+html, body { margin:0; width:100%; height:100%; overflow:hidden; font-family:Arial,Helvetica,sans-serif; background:#000; } /* Configura a base visual da aplicação. */
+/* Mantém a cena A-Frame ocupando toda a janela do navegador. */
+a-scene { position:fixed !important; inset:0; z-index:1; } /* Coloca a cena atrás da interface HTML. */
+/* Estiliza o painel superior de status. */
+#hud { position:fixed; top:0; left:0; right:0; z-index:20; display:flex; justify-content:space-between; align-items:center; gap:12px; padding:14px 16px; color:var(--white); background:linear-gradient(180deg,rgba(2,10,20,.95),rgba(2,10,20,.65),transparent); pointer-events:none; } /* Mantém o HUD visível sem bloquear os toques na cena. */
+/* Organiza o título e o status em coluna. */
+#hud div { display:flex; flex-direction:column; gap:4px; } /* Separa visualmente título e instrução. */
+/* Destaca o título principal. */
+#hud strong { font-size:14px; letter-spacing:.08em; } /* Cria aparência de interface técnica. */
+/* Formata o texto de status. */
+#status { font-size:11px; opacity:.82; } /* Mantém o status secundário discreto. */
+/* Cria o selo de estado do tracking. */
+#badge { padding:7px 9px; border:1px solid rgba(255,255,255,.3); border-radius:999px; font-size:10px; background:rgba(255,255,255,.08); } /* Exibe o estado em formato compacto. */
+/* Esconde qualquer elemento que ainda não deve aparecer. */
+.hidden { display:none !important; } /* Controla a exibição pelo JavaScript. */
+/* Faz a camada de interface ocupar toda a tela sem bloquear áreas que não são botões. */
+#interface { position:fixed; inset:0; z-index:15; pointer-events:none; } /* Permite que apenas os hotspots recebam toque. */
+/* Define a aparência comum dos hotspots. */
+.hotspot { position:absolute; width:54px; height:54px; border-radius:50%; border:3px solid white; background:rgba(11,95,165,.92); color:white; font-weight:700; font-size:18px; box-shadow:0 0 0 8px rgba(56,189,248,.18),0 8px 30px rgba(0,0,0,.45); pointer-events:auto; touch-action:manipulation; animation:pulse 1.3s infinite alternate; } /* Cria áreas de toque grandes e confiáveis no celular. */
+/* Posiciona aproximadamente o hotspot sobre a placa/cabeçote da máquina. */
+.hotspot-1 { left:25%; top:50%; } /* Relaciona o botão 1 à região esquerda da máquina. */
+/* Posiciona aproximadamente o hotspot sobre a torre de ferramentas. */
+.hotspot-2 { left:55%; top:43%; } /* Relaciona o botão 2 à região central da máquina. */
+/* Posiciona aproximadamente o hotspot sobre o painel CNC. */
+.hotspot-3 { right:14%; top:31%; } /* Relaciona o botão 3 à região direita superior. */
+/* Posiciona aproximadamente o hotspot sobre os comandos de segurança. */
+.hotspot-4 { right:19%; top:55%; background:rgba(220,38,38,.94); } /* Destaca o hotspot de segurança em vermelho. */
+/* Define a animação que chama atenção para os hotspots. */
+@keyframes pulse { from { transform:scale(1); } to { transform:scale(1.12); } } /* Faz cada ponto pulsar suavemente. */
+/* Estiliza o painel que apresenta informações após o toque. */
+.panel { position:fixed; left:14px; right:14px; bottom:76px; z-index:30; max-width:520px; margin:auto; padding:20px; border:1px solid rgba(255,255,255,.2); border-radius:18px; color:var(--white); background:var(--glass); backdrop-filter:blur(12px); box-shadow:0 20px 60px rgba(0,0,0,.5); } /* Cria um cartão legível sobre a câmera. */
+/* Formata o pequeno rótulo do painel. */
+#panel-kicker { margin:0 0 6px; color:var(--cyan); font-size:10px; font-weight:700; letter-spacing:.16em; } /* Indica que o conteúdo é um componente técnico. */
+/* Formata o título do painel. */
+#panel-title { margin:0 36px 8px 0; font-size:22px; } /* Dá destaque ao nome do componente. */
+/* Formata o texto explicativo do painel. */
+#panel-text { margin:0 0 12px; line-height:1.45; font-size:14px; } /* Melhora a leitura no celular. */
+/* Formata a caixa de detalhe técnico. */
+#panel-detail { padding:10px 12px; border-left:3px solid var(--cyan); background:rgba(255,255,255,.07); font-size:12px; line-height:1.4; } /* Separa a informação complementar. */
+/* Posiciona o botão de fechamento no canto do painel. */
+.close { position:absolute; top:10px; right:12px; width:36px; height:36px; border:0; border-radius:50%; background:rgba(255,255,255,.12); color:white; font-size:24px; touch-action:manipulation; } /* Facilita fechar o painel com o dedo. */
+/* Cria a legenda inferior. */
+#legend { position:fixed; left:10px; right:10px; bottom:10px; z-index:20; display:flex; justify-content:center; flex-wrap:wrap; gap:6px; pointer-events:none; } /* Mantém a legenda visível sem interferir nos toques. */
+/* Formata cada item da legenda. */
+#legend span { padding:6px 8px; border-radius:999px; color:white; background:rgba(2,10,20,.76); font-size:10px; } /* Cria pequenos chips informativos. */
+/* Ajusta a interface para telas pequenas. */
+@media (max-width:600px) { .hotspot { width:60px; height:60px; } #hud strong { font-size:12px; } #badge { font-size:9px; } } /* Aumenta a área de toque e compacta o HUD no celular. */

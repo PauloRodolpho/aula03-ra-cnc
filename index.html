@@ -1,0 +1,51 @@
+<!DOCTYPE html> <!-- Declara que este documento utiliza HTML5. -->
+<html lang="pt-BR"> <!-- Define o idioma principal da página como português do Brasil. -->
+<head> <!-- Inicia a área de configurações e dependências da página. -->
+  <meta charset="UTF-8"> <!-- Permite a exibição correta de acentos e caracteres especiais. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"> <!-- Ajusta a página à tela do celular. -->
+  <title>Aula 03 - Torno CNC em Realidade Aumentada</title> <!-- Define o título exibido na aba do navegador. -->
+  <link rel="stylesheet" href="css/style.css"> <!-- Carrega o arquivo responsável pelo visual da interface. -->
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script> <!-- Carrega o A-Frame para criação da cena 3D. -->
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script> <!-- Carrega o MindAR para reconhecimento e rastreamento da imagem. -->
+</head> <!-- Encerra a área de configurações da página. -->
+<body> <!-- Inicia o conteúdo visível e interativo da aplicação. -->
+  <header id="hud"> <!-- Cria o painel superior que informa o estado da aplicação. -->
+    <div> <!-- Agrupa o título e o subtítulo do painel. -->
+      <strong>TORNO CNC • MANUAL RA</strong> <!-- Exibe o título principal da experiência. -->
+      <span id="status">Aponte a câmera para a imagem da máquina</span> <!-- Mostra o estado atual do reconhecimento. -->
+    </div> <!-- Encerra o agrupamento do título. -->
+    <span id="badge">AGUARDANDO ALVO</span> <!-- Exibe um indicador visual do estado do tracking. -->
+  </header> <!-- Encerra o painel superior. -->
+
+  <main id="interface" class="hidden"> <!-- Cria a camada HTML interativa e começa escondida. -->
+    <button class="hotspot hotspot-1" data-topic="cabecote" aria-label="Abrir informações do cabeçote">1</button> <!-- Cria o hotspot do cabeçote e placa. -->
+    <button class="hotspot hotspot-2" data-topic="torre" aria-label="Abrir informações da torre de ferramentas">2</button> <!-- Cria o hotspot da torre de ferramentas. -->
+    <button class="hotspot hotspot-3" data-topic="comando" aria-label="Abrir informações do comando CNC">3</button> <!-- Cria o hotspot do painel de comando. -->
+    <button class="hotspot hotspot-4" data-topic="seguranca" aria-label="Abrir informações de segurança">4</button> <!-- Cria o hotspot de segurança. -->
+  </main> <!-- Encerra a camada de hotspots. -->
+
+  <section id="panel" class="panel hidden" aria-live="polite"> <!-- Cria o painel de informações e começa escondido. -->
+    <button id="close-panel" class="close" aria-label="Fechar painel">×</button> <!-- Cria o botão para fechar o painel. -->
+    <p id="panel-kicker">COMPONENTE</p> <!-- Exibe uma pequena categoria acima do título. -->
+    <h2 id="panel-title">Componente</h2> <!-- Reserva o local do título que será preenchido pelo JavaScript. -->
+    <p id="panel-text">Informações do componente.</p> <!-- Reserva o local do texto que será preenchido pelo JavaScript. -->
+    <div id="panel-detail"></div> <!-- Reserva o local para uma informação técnica complementar. -->
+  </section> <!-- Encerra o painel de informações. -->
+
+  <aside id="legend"> <!-- Cria uma legenda permanente para orientar a interação. -->
+    <span>1 Cabeçote/placa</span> <!-- Explica o hotspot 1. -->
+    <span>2 Torre</span> <!-- Explica o hotspot 2. -->
+    <span>3 Comando CNC</span> <!-- Explica o hotspot 3. -->
+    <span>4 Segurança</span> <!-- Explica o hotspot 4. -->
+  </aside> <!-- Encerra a legenda. -->
+
+  <a-scene mindar-image="imageTargetSrc: assets/targets/torno-cnc.mind; autoStart: true; uiScanning: yes; uiLoading: yes;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" embedded> <!-- Cria a cena RA e informa onde está o target compilado. -->
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera> <!-- Cria a câmera virtual controlada pelo tracking do MindAR. -->
+    <a-entity id="target" mindar-image-target="targetIndex: 0"> <!-- Vincula este grupo ao primeiro target existente no arquivo .mind. -->
+      <a-plane position="0 0 0.01" width="1" height="0.03" color="#22c55e" opacity="0.75"></a-plane> <!-- Exibe uma pequena barra verde sobre a imagem para confirmar visualmente o tracking. -->
+    </a-entity> <!-- Encerra o grupo associado ao target. -->
+  </a-scene> <!-- Encerra a cena de Realidade Aumentada. -->
+
+  <script src="js/app.js"></script> <!-- Carrega o JavaScript somente depois que os elementos HTML já foram criados. -->
+</body> <!-- Encerra o conteúdo visível da página. -->
+</html> <!-- Encerra o documento HTML. -->
