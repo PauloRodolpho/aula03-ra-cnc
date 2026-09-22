@@ -1,0 +1,6 @@
+GERE O ARQUIVO torno-cnc.mind A PARTIR DE ../images/torno-cnc-target.png
+
+Compilador oficial:
+https://hiukim.github.io/mind-ar-js-doc/tools/compile/
+
+Não utilize um arquivo .mind antigo ou compilado de outra imagem.

@@ -1,36 +1,38 @@
-# Aula 03 — Manual Interativo em Realidade Aumentada
+# Aula — RA: Manual Interativo do Torno CNC
 
-Versão 2 do projeto didático. Nesta versão, os hotspots são **objetos A-Frame ancorados ao target**. Eles acompanham posição, escala e perspectiva da imagem impressa enquanto o MindAR mantém o tracking.
+## Objetivo
+Apontar o celular para a imagem impressa do torno CNC. Quando o MindAR reconhecer o target, quatro hotspots 3D aparecem ancorados à imagem. O toque em cada círculo abre um painel com informações.
+
+## Correção importante desta versão
+O elemento que recebe `class="clickable"` é o próprio `<a-circle>`, que possui geometria. Assim, o raycaster do A-Frame consegue intersectar a superfície e gerar o evento `click`. Na versão anterior, a classe estava no elemento-pai `<a-entity>`, que não possuía geometria própria, o que tornava a interação inconsistente.
 
 ## Estrutura
+- `index.html`
+- `css/style.css`
+- `js/app.js`
+- `assets/images/torno-cnc-target.png`
+- `assets/targets/torno-cnc.mind` **(deve ser gerado no compilador MindAR usando exatamente a imagem acima)**
 
-```text
-aula03_ra_cnc_v2/
-├── index.html
-├── css/style.css
-├── js/app.js
-└── assets/
-    ├── images/torno-cnc-target.png
-    └── targets/torno-cnc.mind
-```
+## PASSO OBRIGATÓRIO — gerar torno-cnc.mind
+1. Abra o compilador oficial: https://hiukim.github.io/mind-ar-js-doc/tools/compile/
+2. Selecione `assets/images/torno-cnc-target.png`.
+3. Compile a imagem.
+4. Baixe o arquivo `.mind`.
+5. Renomeie para `torno-cnc.mind`.
+6. Coloque em `assets/targets/torno-cnc.mind`.
+7. Não use um `.mind` de outra imagem.
 
-## Antes de publicar
+## Publicação
+Publique no GitHub Pages com `main` + `/(root)`. O site precisa ser servido por HTTPS para a câmera funcionar corretamente.
 
-1. Confirme que `assets/targets/torno-cnc.mind` foi gerado a partir de **exatamente** `assets/images/torno-cnc-target.png`.
-2. Imprima a mesma imagem usada na compilação.
-3. Envie a estrutura completa ao GitHub.
-4. Em **Settings > Pages**, use `Deploy from a branch`, branch `main`, pasta `/(root)`.
-5. Abra o endereço do GitHub Pages no celular e autorize a câmera.
+## Teste
+1. Abra o site no celular.
+2. Autorize a câmera.
+3. Aguarde `PROCURANDO ALVO`.
+4. Aponte para a imagem impressa.
+5. Aguarde `● RA ATIVA`.
+6. Toque diretamente no círculo 1, 2, 3 ou 4.
+7. O painel correspondente deve abrir.
 
-## Teste esperado
-
-1. A câmera ao vivo deve aparecer como fundo da página.
-2. Antes de reconhecer a folha, nenhum hotspot 3D aparece.
-3. Ao reconhecer o torno impresso, aparecem quatro círculos numerados presos à imagem.
-4. Ao mover/inclinar a folha, os círculos acompanham o target.
-5. Ao tocar em um círculo, abre um painel HTML com a informação correspondente.
-6. Ao retirar o target da câmera, os hotspots somem com o próprio grupo rastreado.
-
-## Observação sobre o arquivo .mind
-
-O arquivo incluído nesta pasta foi copiado de um `.mind` disponível no ambiente de trabalho. Antes de usar em aula, valide que ele foi compilado a partir da imagem `torno-cnc-target.png`. Se houver dúvida, recompile a imagem no compilador oficial do MindAR e substitua `assets/targets/torno-cnc.mind`.
+## Observação
+Os textos e informações do torno são didáticos. Para operação real, utilize documentação e procedimentos do fabricante.

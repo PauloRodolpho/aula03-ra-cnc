@@ -1,34 +1,38 @@
-<!DOCTYPE html> <!-- Informa ao navegador que este arquivo usa o padrão HTML5. -->
+<!DOCTYPE html> <!-- Informa ao navegador que o documento utiliza HTML5. -->
 <html lang="pt-BR"> <!-- Define o idioma principal da página como português do Brasil. -->
-<head> <!-- Inicia a área de configurações e dependências da página. -->
-  <meta charset="UTF-8"> <!-- Permite acentos e caracteres especiais corretamente. -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"> <!-- Faz a página ocupar corretamente a tela do celular. -->
-  <title>Aula 03 - Torno CNC | RA Interativa</title> <!-- Define o título exibido na aba do navegador. -->
-  <link rel="stylesheet" href="css/style.css"> <!-- Carrega o arquivo de estilos visuais da aplicação. -->
-  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script> <!-- Carrega o A-Frame, responsável pela cena 3D. -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script> <!-- Carrega o MindAR para reconhecer e rastrear a imagem impressa. -->
+
+<head> <!-- Inicia a área de configurações da página. -->
+  <meta charset="UTF-8"> <!-- Permite utilizar acentos e caracteres especiais. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"> <!-- Faz a página se adaptar corretamente à tela do celular. -->
+  <title>RA | Manual Interativo do Torno CNC</title> <!-- Define o título mostrado na aba do navegador. -->
+
+  <link rel="stylesheet" href="css/style.css"> <!-- Carrega o arquivo responsável pela aparência da interface. -->
+
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script> <!-- Carrega o A-Frame, biblioteca usada para construir a cena 3D. -->
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script> <!-- Carrega o MindAR integrado ao A-Frame para reconhecer e rastrear a imagem. -->
 </head> <!-- Encerra a área de configurações. -->
-<body> <!-- Inicia o conteúdo da aplicação. -->
 
-  <header id="hud"> <!-- Cria o painel superior que mostra o estado da experiência. -->
-    <div class="hud-copy"> <!-- Agrupa título e instrução. -->
-      <strong>TORNO CNC • MANUAL RA</strong> <!-- Exibe o nome da experiência. -->
-      <span id="status">Carregando câmera e target...</span> <!-- Texto alterado pelo JavaScript conforme o estado. -->
+<body> <!-- Inicia o conteúdo visível da aplicação. -->
+
+  <header id="hud"> <!-- Cria o painel superior que informa o estado da aplicação. -->
+    <div class="hud-text"> <!-- Agrupa o título e a orientação ao usuário. -->
+      <strong>TORNO CNC • MANUAL INTERATIVO</strong> <!-- Exibe o nome da experiência. -->
+      <span id="status">Inicializando a câmera...</span> <!-- Este texto será alterado pelo JavaScript. -->
     </div> <!-- Encerra o agrupamento textual. -->
-    <span id="badge">INICIANDO</span> <!-- Selo visual de estado. -->
-  </header> <!-- Encerra o HUD. -->
+    <span id="badge">INICIANDO</span> <!-- Exibe um selo com o estado atual da RA. -->
+  </header> <!-- Encerra o painel superior. -->
 
-  <section id="panel" class="panel hidden" aria-live="polite"> <!-- Cria o painel HTML que mostrará informações depois do toque. -->
-    <button id="close-panel" class="close" aria-label="Fechar painel">×</button> <!-- Permite fechar o painel no celular. -->
-    <p id="panel-kicker">COMPONENTE DO TORNO</p> <!-- Pequeno rótulo do painel. -->
-    <h2 id="panel-title">Componente</h2> <!-- Recebe dinamicamente o título do hotspot tocado. -->
-    <p id="panel-text">Informações do componente.</p> <!-- Recebe dinamicamente a explicação principal. -->
-    <div id="panel-detail"></div> <!-- Recebe dinamicamente uma observação complementar. -->
-  </section> <!-- Encerra o painel informativo. -->
+  <section id="info-panel" class="info-panel hidden" aria-live="polite"> <!-- Cria o painel que mostrará as informações do ponto tocado. -->
+    <button id="close-panel" class="close-button" type="button" aria-label="Fechar painel">×</button> <!-- Cria o botão para fechar o painel. -->
+    <small id="info-kicker">PONTO DO TORNO</small> <!-- Exibe uma pequena identificação do conteúdo. -->
+    <h2 id="info-title">Componente</h2> <!-- Receberá o nome do componente selecionado. -->
+    <p id="info-text">Descrição.</p> <!-- Receberá a descrição principal. -->
+    <p id="info-detail" class="detail">Detalhe.</p> <!-- Receberá uma informação complementar. -->
+  </section> <!-- Encerra o painel de informações. -->
 
-  <aside id="help"> <!-- Exibe uma instrução curta na parte inferior. -->
-    <span>Enquadre a folha impressa inteira. Quando os círculos aparecerem, toque diretamente neles.</span> <!-- Orienta o usuário. -->
-  </aside> <!-- Encerra a instrução inferior. -->
+  <div id="tip"> <!-- Cria uma orientação curta na parte inferior da tela. -->
+    Aponte para a imagem impressa. Quando os pontos aparecerem, toque diretamente no círculo numerado. <!-- Explica a interação ao usuário. -->
+  </div> <!-- Encerra a orientação inferior. -->
 
   <a-scene
     id="ar-scene"
@@ -37,46 +41,77 @@
     renderer="colorManagement: true; physicallyCorrectLights: true; alpha: true;"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false"
-    cursor="rayOrigin: mouse"
-    raycaster="objects: .clickable"
-    embedded> <!-- Cria a cena de RA, inicia a câmera e limita o raycaster aos objetos clicáveis. -->
+    embedded> <!-- Cria a cena de RA e informa onde está o arquivo .mind. -->
 
     <a-camera
       position="0 0 0"
       look-controls="enabled: false"
-      cursor="rayOrigin: mouse"
-      raycaster="objects: .clickable"> <!-- Usa toque/mouse para lançar um raio sobre os hotspots 3D. -->
+      cursor="rayOrigin: mouse; fuse: false"
+      raycaster="objects: .clickable; far: 10000"> <!-- A câmera também cria o raio usado para detectar toque/clique nos objetos .clickable. -->
     </a-camera> <!-- Encerra a câmera virtual. -->
 
-    <a-entity id="target" mindar-image-target="targetIndex: 0"> <!-- Tudo dentro deste grupo fica ancorado ao primeiro target do arquivo .mind. -->
+    <a-entity id="target" mindar-image-target="targetIndex: 0"> <!-- Tudo dentro desta entidade fica ancorado ao primeiro target do arquivo .mind. -->
 
-      <a-entity id="hotspot-cabecote" class="clickable hotspot3d" data-topic="cabecote" position="-0.36 0.03 0.03"> <!-- Hotspot 1: fica preso à região esquerda do target. -->
-        <a-circle radius="0.075" color="#0b5fa5" opacity="0.96" material="shader: flat" animation="property: scale; dir: alternate; dur: 750; loop: true; to: 1.12 1.12 1.12"></a-circle> <!-- Desenha o círculo azul pulsante. -->
-        <a-ring radius-inner="0.083" radius-outer="0.098" color="#ffffff" material="shader: flat"></a-ring> <!-- Desenha o contorno branco. -->
-        <a-text value="1" align="center" color="#ffffff" width="0.75" position="0 0 0.006"></a-text> <!-- Mostra o número 1. -->
+      <a-entity position="-0.34 0.02 0.03"> <!-- Define a posição do conjunto visual do hotspot 1. -->
+        <a-circle
+          class="clickable"
+          data-topic="placa"
+          radius="0.095"
+          color="#1565c0"
+          opacity="0.98"
+          material="shader: flat; side: double"
+          animation="property: scale; from: 1 1 1; to: 1.12 1.12 1.12; dir: alternate; dur: 700; loop: true"> <!-- ESTE círculo possui geometria e a classe clickable; portanto o raycaster consegue tocá-lo. -->
+        </a-circle> <!-- Encerra a área clicável do hotspot 1. -->
+        <a-ring radius-inner="0.102" radius-outer="0.116" color="#ffffff" material="shader: flat; side: double"></a-ring> <!-- Cria o contorno branco do hotspot 1. -->
+        <a-text value="1" align="center" color="#ffffff" width="0.85" position="0 0 0.006"></a-text> <!-- Mostra o número 1. -->
       </a-entity> <!-- Encerra o hotspot 1. -->
 
-      <a-entity id="hotspot-torre" class="clickable hotspot3d" data-topic="torre" position="0.12 0.03 0.03"> <!-- Hotspot 2: fica preso à região central do target. -->
-        <a-circle radius="0.075" color="#0b5fa5" opacity="0.96" material="shader: flat" animation="property: scale; dir: alternate; dur: 850; loop: true; to: 1.12 1.12 1.12"></a-circle> <!-- Desenha o círculo azul pulsante. -->
-        <a-ring radius-inner="0.083" radius-outer="0.098" color="#ffffff" material="shader: flat"></a-ring> <!-- Desenha o contorno branco. -->
-        <a-text value="2" align="center" color="#ffffff" width="0.75" position="0 0 0.006"></a-text> <!-- Mostra o número 2. -->
+      <a-entity position="0.07 0.03 0.03"> <!-- Define a posição do conjunto visual do hotspot 2. -->
+        <a-circle
+          class="clickable"
+          data-topic="torre"
+          radius="0.095"
+          color="#1565c0"
+          opacity="0.98"
+          material="shader: flat; side: double"
+          animation="property: scale; from: 1 1 1; to: 1.12 1.12 1.12; dir: alternate; dur: 820; loop: true"> <!-- O círculo é a superfície realmente clicável do hotspot 2. -->
+        </a-circle> <!-- Encerra a área clicável do hotspot 2. -->
+        <a-ring radius-inner="0.102" radius-outer="0.116" color="#ffffff" material="shader: flat; side: double"></a-ring> <!-- Cria o contorno branco. -->
+        <a-text value="2" align="center" color="#ffffff" width="0.85" position="0 0 0.006"></a-text> <!-- Mostra o número 2. -->
       </a-entity> <!-- Encerra o hotspot 2. -->
 
-      <a-entity id="hotspot-comando" class="clickable hotspot3d" data-topic="comando" position="0.37 0.16 0.03"> <!-- Hotspot 3: fica preso à região do comando CNC. -->
-        <a-circle radius="0.075" color="#0b5fa5" opacity="0.96" material="shader: flat" animation="property: scale; dir: alternate; dur: 950; loop: true; to: 1.12 1.12 1.12"></a-circle> <!-- Desenha o círculo azul pulsante. -->
-        <a-ring radius-inner="0.083" radius-outer="0.098" color="#ffffff" material="shader: flat"></a-ring> <!-- Desenha o contorno branco. -->
-        <a-text value="3" align="center" color="#ffffff" width="0.75" position="0 0 0.006"></a-text> <!-- Mostra o número 3. -->
+      <a-entity position="0.36 0.15 0.03"> <!-- Define a posição do conjunto visual do hotspot 3. -->
+        <a-circle
+          class="clickable"
+          data-topic="comando"
+          radius="0.095"
+          color="#1565c0"
+          opacity="0.98"
+          material="shader: flat; side: double"
+          animation="property: scale; from: 1 1 1; to: 1.12 1.12 1.12; dir: alternate; dur: 940; loop: true"> <!-- O círculo é a superfície realmente clicável do hotspot 3. -->
+        </a-circle> <!-- Encerra a área clicável do hotspot 3. -->
+        <a-ring radius-inner="0.102" radius-outer="0.116" color="#ffffff" material="shader: flat; side: double"></a-ring> <!-- Cria o contorno branco. -->
+        <a-text value="3" align="center" color="#ffffff" width="0.85" position="0 0 0.006"></a-text> <!-- Mostra o número 3. -->
       </a-entity> <!-- Encerra o hotspot 3. -->
 
-      <a-entity id="hotspot-seguranca" class="clickable hotspot3d" data-topic="seguranca" position="0.36 -0.16 0.03"> <!-- Hotspot 4: fica preso à região inferior direita. -->
-        <a-circle radius="0.075" color="#dc2626" opacity="0.96" material="shader: flat" animation="property: scale; dir: alternate; dur: 1050; loop: true; to: 1.12 1.12 1.12"></a-circle> <!-- Desenha o círculo vermelho pulsante. -->
-        <a-ring radius-inner="0.083" radius-outer="0.098" color="#ffffff" material="shader: flat"></a-ring> <!-- Desenha o contorno branco. -->
-        <a-text value="4" align="center" color="#ffffff" width="0.75" position="0 0 0.006"></a-text> <!-- Mostra o número 4. -->
+      <a-entity position="0.35 -0.16 0.03"> <!-- Define a posição do conjunto visual do hotspot 4. -->
+        <a-circle
+          class="clickable"
+          data-topic="seguranca"
+          radius="0.095"
+          color="#d32f2f"
+          opacity="0.98"
+          material="shader: flat; side: double"
+          animation="property: scale; from: 1 1 1; to: 1.12 1.12 1.12; dir: alternate; dur: 1060; loop: true"> <!-- O círculo vermelho é a superfície realmente clicável do hotspot 4. -->
+        </a-circle> <!-- Encerra a área clicável do hotspot 4. -->
+        <a-ring radius-inner="0.102" radius-outer="0.116" color="#ffffff" material="shader: flat; side: double"></a-ring> <!-- Cria o contorno branco. -->
+        <a-text value="4" align="center" color="#ffffff" width="0.85" position="0 0 0.006"></a-text> <!-- Mostra o número 4. -->
       </a-entity> <!-- Encerra o hotspot 4. -->
 
-    </a-entity> <!-- Encerra o grupo que acompanha o target. -->
-  </a-scene> <!-- Encerra a cena de RA. -->
+    </a-entity> <!-- Encerra o grupo ancorado ao target. -->
+  </a-scene> <!-- Encerra a cena de Realidade Aumentada. -->
 
-  <script src="js/app.js"></script> <!-- Carrega a lógica depois que todos os elementos da página já existem. -->
-</body> <!-- Encerra o conteúdo da página. -->
+  <script src="js/app.js"></script> <!-- Carrega a lógica somente depois que os elementos HTML/A-Frame já foram criados. -->
+</body> <!-- Encerra o conteúdo visível. -->
+
 </html> <!-- Encerra o documento HTML. -->
