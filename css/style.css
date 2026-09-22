@@ -1,115 +1,13 @@
-/* ============================== */ /* Cria uma separação visual no código. */
-/* CONFIGURAÇÃO GERAL DA PÁGINA   */ /* Identifica a seção de estilos gerais. */
-/* ============================== */ /* Cria uma separação visual no código. */
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif}
+a-scene{position:absolute!important;inset:0;width:100%;height:100%}
+#hud{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;color:#fff;background:linear-gradient(180deg,rgba(3,18,33,.88),rgba(3,18,33,.25));pointer-events:none}
+#hud div{display:grid;gap:3px}#hud strong{font-size:14px}#hud div span{font-size:12px}#badge{padding:7px 10px;border:1px solid rgba(255,255,255,.45);border-radius:999px;font-size:11px;font-weight:700}
+#hotspot-layer{position:fixed;inset:0;z-index:40;pointer-events:none}
+.hotspot{position:absolute;display:none;width:54px;height:54px;transform:translate(-50%,-50%);border:3px solid #fff;border-radius:50%;background:#1565c0;color:#fff;font-size:20px;font-weight:800;box-shadow:0 0 0 5px rgba(21,101,192,.28),0 6px 20px rgba(0,0,0,.35);pointer-events:auto;touch-action:manipulation}
+.hotspot.visible{display:block}.hotspot.danger{background:#d32f2f}.hotspot:active{transform:translate(-50%,-50%) scale(.9)}
+.hidden{display:none!important}
+.info-panel{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:60;width:min(92vw,520px);padding:18px 48px 18px 18px;color:#eef7ff;background:rgba(5,20,35,.96);border:1px solid rgba(125,211,252,.65);border-radius:16px;box-shadow:0 14px 42px rgba(0,0,0,.38)}
+.info-panel small{color:#7dd3fc;font-weight:700}.info-panel h2{margin:6px 0 8px;font-size:22px}.info-panel p{margin:0;line-height:1.45}.info-panel .detail{margin-top:10px;color:#cbd5e1;font-size:13px}
+.close-button{position:absolute;top:9px;right:10px;width:36px;height:36px;border:0;border-radius:50%;color:#fff;background:rgba(255,255,255,.14);font-size:22px;pointer-events:auto}
 
-* { box-sizing: border-box; } /* Faz largura e altura incluírem bordas e preenchimentos. */
-
-html, body { /* Seleciona o documento e o corpo da página. */
-  margin: 0; /* Remove a margem padrão do navegador. */
-  width: 100%; /* Faz a página ocupar toda a largura disponível. */
-  height: 100%; /* Faz a página ocupar toda a altura disponível. */
-  overflow: hidden; /* Impede rolagem enquanto a câmera está ativa. */
-  background: #000; /* Mostra preto somente durante a inicialização da câmera. */
-  font-family: Arial, Helvetica, sans-serif; /* Define uma fonte simples e compatível. */
-} /* Encerra as configurações gerais. */
-
-a-scene { /* Seleciona a cena criada pelo A-Frame. */
-  position: fixed !important; /* Mantém a cena presa à janela do navegador. */
-  inset: 0; /* Faz a cena ocupar topo, direita, baixo e esquerda. */
-  z-index: 1; /* Mantém a câmera/cena atrás da interface HTML. */
-} /* Encerra o estilo da cena. */
-
-.hidden { display: none !important; } /* Esconde qualquer elemento que receba a classe hidden. */
-
-/* ============================== */ /* Cria uma separação visual. */
-/* HUD SUPERIOR                   */ /* Identifica a seção do painel superior. */
-/* ============================== */ /* Cria uma separação visual. */
-
-#hud { /* Seleciona o painel superior. */
-  position: fixed; /* Mantém o painel preso à tela. */
-  top: 0; /* Encosta o painel no topo. */
-  left: 0; /* Encosta o painel na esquerda. */
-  right: 0; /* Encosta o painel na direita. */
-  z-index: 20; /* Mantém o painel acima da câmera. */
-  display: flex; /* Coloca os elementos internos lado a lado. */
-  justify-content: space-between; /* Separa texto e selo de estado. */
-  align-items: center; /* Alinha verticalmente os elementos. */
-  gap: 12px; /* Cria espaço entre os elementos. */
-  padding: 12px 14px; /* Cria espaço interno. */
-  color: #fff; /* Define os textos como brancos. */
-  background: linear-gradient(180deg, rgba(3,18,33,.92), rgba(3,18,33,.65)); /* Cria um fundo escuro translúcido. */
-  pointer-events: none; /* Impede o HUD de bloquear toques destinados à cena. */
-} /* Encerra o estilo do HUD. */
-
-.hud-text { display: grid; gap: 3px; } /* Organiza título e status em duas linhas. */
-.hud-text strong { font-size: 14px; letter-spacing: .4px; } /* Formata o título. */
-.hud-text span { font-size: 12px; opacity: .9; } /* Formata a mensagem de status. */
-
-#badge { /* Seleciona o selo de estado. */
-  padding: 7px 10px; /* Cria espaço interno. */
-  border: 1px solid rgba(255,255,255,.45); /* Cria um contorno discreto. */
-  border-radius: 999px; /* Deixa o selo arredondado. */
-  font-size: 11px; /* Define o tamanho do texto. */
-  font-weight: 700; /* Deixa o texto em negrito. */
-  white-space: nowrap; /* Impede quebra de linha no selo. */
-} /* Encerra o estilo do selo. */
-
-/* ============================== */ /* Cria uma separação visual. */
-/* PAINEL DE INFORMAÇÕES          */ /* Identifica a seção do painel. */
-/* ============================== */ /* Cria uma separação visual. */
-
-.info-panel { /* Seleciona o painel aberto depois do toque. */
-  position: fixed; /* Mantém o painel preso à tela. */
-  left: 50%; /* Posiciona a origem horizontal no centro. */
-  bottom: 24px; /* Afasta o painel da borda inferior. */
-  transform: translateX(-50%); /* Centraliza o painel corretamente. */
-  z-index: 30; /* Mantém o painel acima da cena e do HUD. */
-  width: min(92vw, 520px); /* Limita a largura para celular e desktop. */
-  padding: 18px 48px 18px 18px; /* Cria espaço interno e reserva área para o botão X. */
-  color: #eef7ff; /* Define a cor principal do texto. */
-  background: rgba(5,20,35,.94); /* Cria fundo escuro quase opaco. */
-  border: 1px solid rgba(125,211,252,.55); /* Cria uma borda azul clara. */
-  border-radius: 16px; /* Arredonda os cantos. */
-  box-shadow: 0 14px 42px rgba(0,0,0,.38); /* Cria profundidade visual. */
-} /* Encerra o estilo do painel. */
-
-.info-panel small { color: #7dd3fc; font-weight: 700; letter-spacing: .8px; } /* Formata o rótulo do painel. */
-.info-panel h2 { margin: 6px 0 8px; font-size: 22px; } /* Formata o título do componente. */
-.info-panel p { margin: 0; line-height: 1.45; } /* Formata os parágrafos. */
-.info-panel .detail { margin-top: 10px; color: #cbd5e1; font-size: 13px; } /* Formata o detalhe complementar. */
-
-.close-button { /* Seleciona o botão X. */
-  position: absolute; /* Permite posicionar o botão dentro do painel. */
-  top: 9px; /* Afasta o botão do topo. */
-  right: 10px; /* Afasta o botão da direita. */
-  width: 34px; /* Define largura confortável para toque. */
-  height: 34px; /* Define altura confortável para toque. */
-  border: 0; /* Remove a borda padrão. */
-  border-radius: 50%; /* Deixa o botão circular. */
-  color: #fff; /* Define o X como branco. */
-  background: rgba(255,255,255,.12); /* Cria um fundo discreto. */
-  font-size: 22px; /* Aumenta o X. */
-  cursor: pointer; /* Mostra cursor de botão no computador. */
-} /* Encerra o estilo do botão X. */
-
-/* ============================== */ /* Cria uma separação visual. */
-/* ORIENTAÇÃO INFERIOR            */ /* Identifica a dica de uso. */
-/* ============================== */ /* Cria uma separação visual. */
-
-#tip { /* Seleciona a dica inferior. */
-  position: fixed; /* Mantém a dica presa à tela. */
-  left: 50%; /* Usa o centro como referência. */
-  bottom: 12px; /* Afasta da borda inferior. */
-  transform: translateX(-50%); /* Centraliza a dica. */
-  z-index: 15; /* Mantém a dica acima da câmera. */
-  width: min(92vw, 680px); /* Controla a largura. */
-  padding: 8px 12px; /* Cria espaço interno. */
-  color: #fff; /* Define texto branco. */
-  background: rgba(0,0,0,.58); /* Cria fundo translúcido. */
-  border-radius: 10px; /* Arredonda a caixa. */
-  text-align: center; /* Centraliza o texto. */
-  font-size: 12px; /* Define tamanho legível sem ocupar muita tela. */
-  pointer-events: none; /* Impede a dica de bloquear o toque na cena. */
-} /* Encerra o estilo da dica. */
-
-body.panel-open #tip { display: none; } /* Esconde a dica enquanto o painel de informações estiver aberto. */
